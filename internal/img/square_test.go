@@ -15,28 +15,26 @@ type scenario struct {
 	want image.Image
 }
 
-func TestCrop(t *testing.T) {
+func TestSquare(t *testing.T) {
 	baseImg := newGradientImage(1000, 1000)
 
 	scns := map[string]scenario{
 		"should not crop image with same size as target": {
 			src:          baseImg.SubImage(image.Rect(0, 0, 100, 100)),
-			targetWidth:  100,
-			targetHeight: 100,
 
 			want: baseImg.SubImage(image.Rect(0, 0, 100, 100)),
 		},
 	}
 
 	for name, scn := range scns {
-		t.Run(name, scn.testCrop)
+		t.Run(name, scn.testSquare)
 	}
 }
 
-func (scn scenario) testCrop(t *testing.T) {
+func (scn scenario) testSquare(t *testing.T) {
 	t.Parallel()
 
-	got := img.Crop(scn.src, scn.targetWidth, scn.targetHeight)
+	got := img.Square(scn.src)
 
 	scn.assertIsExpectedSize(t, got)
 	scn.assertContainsExpectedPixels(t, got)
