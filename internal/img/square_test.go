@@ -20,9 +20,14 @@ func TestSquare(t *testing.T) {
 
 	scns := map[string]scenario{
 		"should not crop image with same size as target": {
-			src:          baseImg.SubImage(image.Rect(0, 0, 100, 100)),
+			src: baseImg.SubImage(image.Rect(0, 0, 100, 100)),
 
 			want: baseImg.SubImage(image.Rect(0, 0, 100, 100)),
+		},
+		"should crop vertical image towards the center": {
+			src: baseImg.SubImage(image.Rect(0, 0, 100, 200)),
+
+			want: baseImg.SubImage(image.Rect(0, 50, 100, 150)),
 		},
 	}
 
@@ -42,7 +47,7 @@ func (scn scenario) testSquare(t *testing.T) {
 
 func (scn scenario) assertIsExpectedSize(t testing.TB, got image.Image) {
 	if scn.want.Bounds().Min != got.Bounds().Min || scn.want.Bounds().Max != got.Bounds().Max {
-		t.Errorf("expected an %dx%d image but got an %dx%d image", scn.want.Bounds().Dx(), scn.want.Bounds().Dy(), got.Bounds().Dx(), got.Bounds().Dx())
+		t.Errorf("expected an %dx%d image but got an %dx%d image", scn.want.Bounds().Dx(), scn.want.Bounds().Dy(), got.Bounds().Dx(), got.Bounds().Dy())
 	}
 }
 
